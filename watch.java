@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-// Inheritance: OpenWeatherMapProvider IS-A WeatherProvider
+
 public class OpenWeatherMapProvider extends WeatherProvider {
 
-    // ✅ Your FREE API key here
+   
     private static final String API_KEY = "383702fee7ace43edf89ffd70d3dbc85";
 
     private static final String BASE_URL =
@@ -30,7 +30,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
 
             String json = sendGetRequest(urlStr);
 
-            // Check for error like city not found
+            
             if (json.contains("\"cod\":\"404\"") || json.contains("\"cod\":404")) {
                 return new WeatherData(city, formattedCountry, 0, 0, 0, 0,
                         "N/A", false, "City not found or invalid country code.");
@@ -44,7 +44,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         }
     }
 
-    // Sends HTTP GET request and returns body as string
+    
     private String sendGetRequest(String urlStr) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -75,7 +75,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         return content.toString();
     }
 
-    // Very simple JSON parsing for OpenWeather response
+    
     private WeatherData parseWeatherData(String json) {
         String cityName = extractString(json, "\"name\":\"", "\"");
         String country = extractString(json, "\"country\":\"", "\"");
@@ -85,7 +85,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         int humidity = (int) extractDouble(json, "\"humidity\":");
         double windSpeed = extractDouble(json, "\"speed\":");
 
-        // weather[0].description
+        
         String condition = extractString(json, "\"description\":\"", "\"");
 
         return new WeatherData(
@@ -101,7 +101,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         );
     }
 
-    // Small helper to extract double after a key
+    
     private double extractDouble(String json, String key) {
         int index = json.indexOf(key);
         if (index == -1) return 0.0;
@@ -126,7 +126,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         }
     }
 
-    // Helper to extract string between startKey and endChar
+   
     private String extractString(String json, String startKey, String endChar) {
         int start = json.indexOf(startKey);
         if (start == -1) return "N/A";
@@ -142,7 +142,7 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         return Math.round(value * 10.0) / 10.0;
     }
 
-    // Capitalize each word of condition like "light rain" -> "Light Rain"
+    
     private String capitalizeWords(String text) {
         if (text == null || text.isEmpty() || text.equals("N/A")) {
             return text;
@@ -159,3 +159,4 @@ public class OpenWeatherMapProvider extends WeatherProvider {
         return sb.toString().trim();
     }
 }
+
